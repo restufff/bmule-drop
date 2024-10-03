@@ -1,0 +1,21 @@
+{
+  "name": "cypress-e2e-tests",
+  "version": "1.0.0",
+  "description": "Cypress end-to-end testing setup for a game play and claim process",
+  "main": "index.js",
+  "scripts": {
+    "test": "cypress run",
+    "cypress:open": "cypress open"
+  },
+  "keywords": [
+    "cypress",
+    "e2e",
+    "testing",
+    "automation"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "cypress": "^12.0.0"
+  }
+}
