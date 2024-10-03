@@ -1,51 +1,47 @@
-name: Cypress E2E Tests
+name: Cypress Tests
 
 on:
   push:
     branches:
-      - main  # Run tests when code is pushed to the main branch
+      - main
   pull_request:
     branches:
-      - main  # Run tests on pull requests targeting the main branch
+      - main
+  schedule:
+    - cron: "0 */5 * * *"
 
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js environment
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'  # Use Node.js version 16 (or any version you need)
+          node-version: "16"
 
-      # Step 3: Install dependencies
-      - name: Install NPM dependencies
+      - name: Install dependencies
         run: npm install
 
-      # Step 4: Run Cypress tests with an environment variable
       - name: Run Cypress tests
-        run: npx cypress run
         env:
-          CYPRESS_JWT_TOKEN: ${{ secrets.JWT_TOKEN }}  # Add this line to use the token
+          BEARER_TOKEN: ${{ secrets.JWT_TOKEN }}
+        run: |
+          timeout 5h npx cypress run
 
-
-      # Optional: Upload test results as artifacts for inspection
-      - name: Upload Cypress results
+      - name: Archive test results
+        if: always()
         uses: actions/upload-artifact@v3
         with:
           name: cypress-results
-          path: cypress/screenshots
+          path: cypress/results
 
-      # Step 5: Cache Cypress binary
-      - name: Cache Cypress binary
-        uses: actions/cache@v3
+      - name: Archive screenshots and videos
+        if: always()
+        uses: actions/upload-artifact@v3
         with:
-          path: ~/.cache/Cypress
-          key: ${{ runner.os }}-cypress-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-cypress
+          name: cypress-screenshots-videos
+          path: cypress/screenshots,cypress/videos

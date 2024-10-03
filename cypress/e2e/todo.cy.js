@@ -10,7 +10,7 @@ describe('E2E Game Play and Claim with Continuous Loop', () => {
         url: 'https://game-domain.blum.codes/api/v1/game/play', // The game play API endpoint
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYXNfZ3Vlc3QiOmZhbHNlLCJ0eXBlIjoiQUNDRVNTIiwiaXNzIjoiYmx1bSIsInN1YiI6IjRjYTQ0NTFiLTA2NDQtNGE1Ni1hZTQxLTY4OTgwNjY2YzUyNCIsImV4cCI6MTcyNzkzMDMxMiwiaWF0IjoxNzI3OTI2NzEyfQ.FUs6BmtiXhNzUWx1-9ycLs5cbXfTd3pMSx0UCNZiBZ8`, // Replace with a valid JWT token
+          'Authorization': `Bearer ${Cypress.env('JWT_TOKEN')}`, // Use JWT token from environment variables
         },
         body: {
           // Add any payload needed for the game play API
@@ -32,7 +32,7 @@ describe('E2E Game Play and Claim with Continuous Loop', () => {
             url: 'https://game-domain.blum.codes/api/v1/game/claim', // The game claim API endpoint
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoYXNfZ3Vlc3QiOmZhbHNlLCJ0eXBlIjoiQUNDRVNTIiwiaXNzIjoiYmx1bSIsInN1YiI6IjRjYTQ0NTFiLTA2NDQtNGE1Ni1hZTQxLTY4OTgwNjY2YzUyNCIsImV4cCI6MTcyNzkzMDMxMiwiaWF0IjoxNzI3OTI2NzEyfQ.FUs6BmtiXhNzUWx1-9ycLs5cbXfTd3pMSx0UCNZiBZ8`, // Replace with a valid JWT token
+              'Authorization': `Bearer ${Cypress.env('JWT_TOKEN')}`, // Use JWT token from environment variables
             },
             body: {
               gameId: gameId, // Use the gameId from the previous API response
