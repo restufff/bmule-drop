@@ -1,4 +1,4 @@
-name: Cypress Tests
+name: Cypress E2E Tests
 
 on:
   push:
@@ -7,41 +7,28 @@ on:
   pull_request:
     branches:
       - main
-  schedule:
-    - cron: "0 */5 * * *"
 
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      # Step 1: Checkout the repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      # Step 2: Set up Node.js environment
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: '16'
 
-      - name: Install dependencies
+      # Step 3: Install dependencies
+      - name: Install NPM dependencies
         run: npm install
 
+      # Step 4: Run Cypress tests with environment variables
       - name: Run Cypress tests
+        run: npx cypress run
         env:
-          BEARER_TOKEN: ${{ secrets.JWT_TOKEN }}
-        run: |
-          timeout 5h npx cypress run
-
-      - name: Archive test results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: cypress-results
-          path: cypress/results
-
-      - name: Archive screenshots and videos
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: cypress-screenshots-videos
-          path: cypress/screenshots,cypress/videos
+          CYPRESS_JWT_TOKEN: ${{ secrets.JWT_TOKEN }}  # Use GitHub secret for JWT_TOKEN
